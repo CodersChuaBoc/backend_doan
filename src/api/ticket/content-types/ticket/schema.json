@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tickets",
+  "info": {
+    "singularName": "ticket",
+    "pluralName": "tickets",
+    "displayName": "ticket"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "price": {
+      "type": "biginteger"
+    },
+    "name": {
+      "type": "string"
+    },
+    "actions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::action.action",
+      "mappedBy": "ticket"
+    }
+  }
+}
