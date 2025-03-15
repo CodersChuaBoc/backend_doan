@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invoice_details",
+  "info": {
+    "singularName": "invoice-detail",
+    "pluralName": "invoice-details",
+    "displayName": "InvoiceDetail"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "invoice": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::invoice.invoice",
+      "inversedBy": "invoice_details"
+    },
+    "ticket": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ticket.ticket"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::service.service"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "price": {
+      "type": "integer"
+    },
+    "validDate": {
+      "type": "date"
+    }
+  }
+}

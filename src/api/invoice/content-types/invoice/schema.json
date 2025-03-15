@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invoices",
+  "info": {
+    "singularName": "invoice",
+    "pluralName": "invoices",
+    "displayName": "Invoice"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "invoices"
+    },
+    "totalPrice": {
+      "type": "biginteger"
+    },
+    "PhoneNumber": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "fullName": {
+      "type": "string"
+    },
+    "invoice_details": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice-detail.invoice-detail",
+      "mappedBy": "invoice"
+    }
+  }
+}

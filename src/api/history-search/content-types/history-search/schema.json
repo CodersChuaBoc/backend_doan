@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "history_searches",
+  "info": {
+    "singularName": "history-search",
+    "pluralName": "history-searches",
+    "displayName": "HistorySearch"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "search": {
+      "type": "string"
+    }
+  }
+}

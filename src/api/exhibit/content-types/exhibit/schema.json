@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "exhibits",
+  "info": {
+    "singularName": "exhibit",
+    "pluralName": "exhibits",
+    "displayName": "Exhibit"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "descriptiton": {
+      "type": "text"
+    },
+    "period": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "image": {
+      "type": "string"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "exhibits"
+    }
+  }
+}

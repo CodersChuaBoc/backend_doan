@@ -4,7 +4,8 @@
   "info": {
     "singularName": "ticket",
     "pluralName": "tickets",
-    "displayName": "ticket"
+    "displayName": "ticket",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -21,6 +22,12 @@
       "relation": "oneToMany",
       "target": "api::action.action",
       "mappedBy": "ticket"
+    },
+    "description": {
+      "type": "text"
+    },
+    "type": {
+      "type": "string"
     }
   }
 }

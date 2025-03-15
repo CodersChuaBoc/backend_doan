@@ -87,6 +87,33 @@
       "relation": "oneToMany",
       "target": "api::post.post",
       "mappedBy": "users_permissions_user"
+    },
+    "address": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "boolean"
+    },
+    "fullName": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "dateOfBirth": {
+      "type": "date"
+    },
+    "exhibits": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::exhibit.exhibit",
+      "mappedBy": "users_permissions_user"
+    },
+    "invoices": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice.invoice",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "post",
     "pluralName": "posts",
-    "displayName": "Post"
+    "displayName": "Post",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -13,16 +14,17 @@
     "title": {
       "type": "text"
     },
-    "body": {
+    "content": {
       "type": "richtext"
     },
     "audio": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "files",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "category": {
       "type": "relation",
@@ -35,6 +37,24 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "posts"
+    },
+    "shortDesc": {
+      "type": "text"
+    },
+    "thumbnail": {
+      "type": "string"
+    },
+    "highlightAvatar": {
+      "type": "string"
+    },
+    "isHighlight": {
+      "type": "boolean"
+    },
+    "view": {
+      "type": "integer"
+    },
+    "source": {
+      "type": "string"
     }
   }
 }
