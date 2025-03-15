@@ -975,7 +975,8 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    permission: Schema.Attribute.Enumeration<['admin', 'user']>;
+    permission: Schema.Attribute.Enumeration<['admin', 'user']> &
+      Schema.Attribute.DefaultTo<'user'>;
     point: Schema.Attribute.Integer;
     posts: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
     provider: Schema.Attribute.String;

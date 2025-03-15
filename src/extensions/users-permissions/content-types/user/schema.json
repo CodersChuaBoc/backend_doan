@@ -70,7 +70,8 @@
       "enum": [
         "admin",
         "user"
-      ]
+      ],
+      "default": "user"
     },
     "point": {
       "type": "integer"
