@@ -1179,7 +1179,7 @@ export interface PluginUsersPermissionsUser
       }>;
     exhibits: Schema.Attribute.Relation<'oneToMany', 'api::exhibit.exhibit'>;
     fullName: Schema.Attribute.String;
-    gender: Schema.Attribute.Boolean;
+    gender: Schema.Attribute.Enumeration<['male', 'female', 'other']>;
     invoices: Schema.Attribute.Relation<'oneToMany', 'api::invoice.invoice'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1194,8 +1194,8 @@ export interface PluginUsersPermissionsUser
       }>;
     permission: Schema.Attribute.Enumeration<['admin', 'user']> &
       Schema.Attribute.DefaultTo<'user'>;
-    phone: Schema.Attribute.String;
-    point: Schema.Attribute.Integer;
+    phoneNumber: Schema.Attribute.String;
+    point: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     posts: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;

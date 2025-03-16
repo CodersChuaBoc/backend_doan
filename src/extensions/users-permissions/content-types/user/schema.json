@@ -74,7 +74,8 @@
       "default": "user"
     },
     "point": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0
     },
     "actions": {
       "type": "relation",
@@ -91,13 +92,10 @@
     "address": {
       "type": "string"
     },
-    "gender": {
-      "type": "boolean"
-    },
     "fullName": {
       "type": "string"
     },
-    "phone": {
+    "phoneNumber": {
       "type": "string"
     },
     "dateOfBirth": {
@@ -114,6 +112,14 @@
       "relation": "oneToMany",
       "target": "api::invoice.invoice",
       "mappedBy": "users_permissions_user"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ]
     }
   }
 }
