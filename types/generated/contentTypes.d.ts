@@ -404,6 +404,38 @@ export interface ApiActionAction extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCategoryArtifactCategoryArtifact
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'category_artifacts';
+  info: {
+    displayName: 'CategoryArtifact';
+    pluralName: 'category-artifacts';
+    singularName: 'category-artifact';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    exhibits: Schema.Attribute.Relation<'oneToMany', 'api::exhibit.exhibit'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::category-artifact.category-artifact'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    orderIndex: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -438,6 +470,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
 export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
   collectionName: 'exhibits';
   info: {
+    description: '';
     displayName: 'Exhibit';
     pluralName: 'exhibits';
     singularName: 'exhibit';
@@ -446,11 +479,23 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    acquisitionDate: Schema.Attribute.Date;
+    audio: Schema.Attribute.Media<'files' | 'audios'>;
+    category_artifact: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::category-artifact.category-artifact'
+    >;
+    condition: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     descriptiton: Schema.Attribute.Text;
-    image: Schema.Attribute.String;
+    dimensions: Schema.Attribute.String;
+    historicalSignificance: Schema.Attribute.Text;
+    history: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images' | 'files'>;
+    images: Schema.Attribute.Media<'images' | 'files', true>;
+    isFeatured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -458,7 +503,9 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     location: Schema.Attribute.String;
+    material: Schema.Attribute.String;
     name: Schema.Attribute.String;
+    origin: Schema.Attribute.String;
     period: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
@@ -468,6 +515,8 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    weight: Schema.Attribute.String;
+    year: Schema.Attribute.Integer;
   };
 }
 
@@ -574,6 +623,37 @@ export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPeriodsApiPeriodsApi extends Struct.CollectionTypeSchema {
+  collectionName: 'periods';
+  info: {
+    displayName: 'Periods';
+    pluralName: 'periods';
+    singularName: 'periods-api';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    endYear: Schema.Attribute.Integer;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::periods-api.periods-api'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    startYear: Schema.Attribute.Integer;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPostPost extends Struct.CollectionTypeSchema {
   collectionName: 'posts';
   info: {
@@ -586,22 +666,25 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    audio: Schema.Attribute.Media<'files' | 'audios'>;
+    author: Schema.Attribute.String;
+    authorBio: Schema.Attribute.String;
     category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
-    content: Schema.Attribute.RichText;
+    content: Schema.Attribute.JSON;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    highlightAvatar: Schema.Attribute.String;
+    date: Schema.Attribute.Date;
+    excerpt: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images' | 'files'>;
+    imageCaption: Schema.Attribute.Text;
     isHighlight: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::post.post'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    shortDesc: Schema.Attribute.Text;
-    source: Schema.Attribute.String;
-    thumbnail: Schema.Attribute.String;
-    title: Schema.Attribute.Text;
+    slug: Schema.Attribute.String;
+    tag: Schema.Attribute.Relation<'manyToOne', 'api::tag.tag'>;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -666,6 +749,32 @@ export interface ApiServiceService extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
     price: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTagTag extends Struct.CollectionTypeSchema {
+  collectionName: 'tags';
+  info: {
+    displayName: 'Tag';
+    pluralName: 'tags';
+    singularName: 'tag';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::tag.tag'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    posts: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1227,14 +1336,17 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::action.action': ApiActionAction;
+      'api::category-artifact.category-artifact': ApiCategoryArtifactCategoryArtifact;
       'api::category.category': ApiCategoryCategory;
       'api::exhibit.exhibit': ApiExhibitExhibit;
       'api::history-search.history-search': ApiHistorySearchHistorySearch;
       'api::invoice-detail.invoice-detail': ApiInvoiceDetailInvoiceDetail;
       'api::invoice.invoice': ApiInvoiceInvoice;
+      'api::periods-api.periods-api': ApiPeriodsApiPeriodsApi;
       'api::post.post': ApiPostPost;
       'api::references-api.references-api': ApiReferencesApiReferencesApi;
       'api::service.service': ApiServiceService;
+      'api::tag.tag': ApiTagTag;
       'api::ticket.ticket': ApiTicketTicket;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

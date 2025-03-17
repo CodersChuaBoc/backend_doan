@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "category_artifacts",
+  "info": {
+    "singularName": "category-artifact",
+    "pluralName": "category-artifacts",
+    "displayName": "CategoryArtifact"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "orderIndex": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "string"
+    },
+    "exhibits": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::exhibit.exhibit",
+      "mappedBy": "category_artifact"
+    }
+  }
+}

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "exhibit",
     "pluralName": "exhibits",
-    "displayName": "Exhibit"
+    "displayName": "Exhibit",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -22,14 +23,75 @@
     "location": {
       "type": "string"
     },
-    "image": {
-      "type": "string"
-    },
     "users_permissions_user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "exhibits"
+    },
+    "category_artifact": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category-artifact.category-artifact",
+      "inversedBy": "exhibits"
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
+    },
+    "audio": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files",
+        "audios"
+      ]
+    },
+    "dimensions": {
+      "type": "string"
+    },
+    "weight": {
+      "type": "string"
+    },
+    "origin": {
+      "type": "string"
+    },
+    "historicalSignificance": {
+      "type": "text"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "material": {
+      "type": "string"
+    },
+    "condition": {
+      "type": "string"
+    },
+    "acquisitionDate": {
+      "type": "date"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "history": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
     }
   }
 }

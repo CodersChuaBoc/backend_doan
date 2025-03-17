@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "periods",
+  "info": {
+    "singularName": "periods-api",
+    "pluralName": "periods",
+    "displayName": "Periods"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "startYear": {
+      "type": "integer"
+    },
+    "endYear": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

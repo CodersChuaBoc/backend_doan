@@ -11,21 +11,6 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "title": {
-      "type": "text"
-    },
-    "content": {
-      "type": "richtext"
-    },
-    "audio": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "files",
-        "audios"
-      ]
-    },
     "category": {
       "type": "relation",
       "relation": "manyToOne",
@@ -38,23 +23,50 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "posts"
     },
-    "shortDesc": {
+    "view": {
+      "type": "integer"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "excerpt": {
       "type": "text"
     },
-    "thumbnail": {
+    "date": {
+      "type": "date"
+    },
+    "author": {
       "type": "string"
     },
-    "highlightAvatar": {
+    "authorBio": {
       "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "imageCaption": {
+      "type": "text"
+    },
+    "content": {
+      "type": "json"
     },
     "isHighlight": {
       "type": "boolean"
     },
-    "view": {
-      "type": "integer"
-    },
-    "source": {
-      "type": "string"
+    "tag": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tag.tag",
+      "inversedBy": "posts"
     }
   }
 }
