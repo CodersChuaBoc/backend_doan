@@ -623,6 +623,41 @@ export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
+  collectionName: 'messages';
+  info: {
+    description: '';
+    displayName: 'Message';
+    pluralName: 'messages';
+    singularName: 'message';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::message.message'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    role: Schema.Attribute.Enumeration<['user', 'assistant']>;
+    sessionId: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiPeriodsApiPeriodsApi extends Struct.CollectionTypeSchema {
   collectionName: 'periods';
   info: {
@@ -1296,6 +1331,7 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    messages: Schema.Attribute.Relation<'oneToMany', 'api::message.message'>;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
@@ -1342,6 +1378,7 @@ declare module '@strapi/strapi' {
       'api::history-search.history-search': ApiHistorySearchHistorySearch;
       'api::invoice-detail.invoice-detail': ApiInvoiceDetailInvoiceDetail;
       'api::invoice.invoice': ApiInvoiceInvoice;
+      'api::message.message': ApiMessageMessage;
       'api::periods-api.periods-api': ApiPeriodsApiPeriodsApi;
       'api::post.post': ApiPostPost;
       'api::references-api.references-api': ApiReferencesApiReferencesApi;
