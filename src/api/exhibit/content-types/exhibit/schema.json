@@ -14,7 +14,7 @@
     "name": {
       "type": "string"
     },
-    "descriptiton": {
+    "description": {
       "type": "text"
     },
     "period": {

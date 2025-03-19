@@ -489,7 +489,7 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    descriptiton: Schema.Attribute.Text;
+    description: Schema.Attribute.Text;
     dimensions: Schema.Attribute.String;
     historicalSignificance: Schema.Attribute.Text;
     history: Schema.Attribute.Text;
