@@ -479,18 +479,15 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    acquisitionDate: Schema.Attribute.Date;
     audio: Schema.Attribute.Media<'files' | 'audios'>;
     category_artifact: Schema.Attribute.Relation<
       'manyToOne',
       'api::category-artifact.category-artifact'
     >;
-    condition: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
-    dimensions: Schema.Attribute.String;
     historicalSignificance: Schema.Attribute.Text;
     history: Schema.Attribute.Text;
     image: Schema.Attribute.Media<'images' | 'files'>;
@@ -503,9 +500,7 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     location: Schema.Attribute.String;
-    material: Schema.Attribute.String;
     name: Schema.Attribute.String;
-    origin: Schema.Attribute.String;
     period: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
@@ -515,7 +510,6 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    weight: Schema.Attribute.String;
     year: Schema.Attribute.Integer;
   };
 }

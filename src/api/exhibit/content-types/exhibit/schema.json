@@ -48,29 +48,11 @@
         "audios"
       ]
     },
-    "dimensions": {
-      "type": "string"
-    },
-    "weight": {
-      "type": "string"
-    },
-    "origin": {
-      "type": "string"
-    },
     "historicalSignificance": {
       "type": "text"
     },
     "year": {
       "type": "integer"
-    },
-    "material": {
-      "type": "string"
-    },
-    "condition": {
-      "type": "string"
-    },
-    "acquisitionDate": {
-      "type": "date"
     },
     "images": {
       "type": "media",
