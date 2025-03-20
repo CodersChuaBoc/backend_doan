@@ -18,5 +18,13 @@ export default ({ env }: any) => ({
             defaultReplyTo: env('MAILGUN_DEFAULT_REPLY_TO'),
           },
         },
+    },
+    meilisearch: {
+      config: {
+        // Your meili host
+        host: 'http://localhost:7700',
+        // Your master key or private key
+        apiKey: 'masterKey',
       },
+    },
 });
