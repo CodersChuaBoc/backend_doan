@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: strapi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  strapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: strapi_app
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./strapi-app:/app
+    ports:
+      - "1337:1337"
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+    depends_on:
+      - postgres
+
+  melisearch:
+    image: getmeili/meilisearch:latest
+    container_name: melisearch
+    restart: always
+    environment:
+      MEILI_MASTER_KEY: "masterKey"
+    ports:
+      - "7700:7700"
+    volumes:
+      - melisearch_data:/meili_data
+
+volumes:
+  postgres_data:
+  melisearch_data:
