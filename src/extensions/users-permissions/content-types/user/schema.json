@@ -126,6 +126,12 @@
       "relation": "oneToMany",
       "target": "api::message.message",
       "mappedBy": "users_permissions_user"
+    },
+    "history_searches": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::history-search.history-search",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

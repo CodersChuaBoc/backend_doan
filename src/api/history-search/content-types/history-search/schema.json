@@ -4,7 +4,8 @@
   "info": {
     "singularName": "history-search",
     "pluralName": "history-searches",
-    "displayName": "HistorySearch"
+    "displayName": "HistorySearch",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -12,6 +13,12 @@
   "attributes": {
     "search": {
       "type": "string"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "history_searches"
     }
   }
 }

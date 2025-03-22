@@ -518,6 +518,7 @@ export interface ApiHistorySearchHistorySearch
   extends Struct.CollectionTypeSchema {
   collectionName: 'history_searches';
   info: {
+    description: '';
     displayName: 'HistorySearch';
     pluralName: 'history-searches';
     singularName: 'history-search';
@@ -540,6 +541,10 @@ export interface ApiHistorySearchHistorySearch
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1318,6 +1323,10 @@ export interface PluginUsersPermissionsUser
     exhibits: Schema.Attribute.Relation<'oneToMany', 'api::exhibit.exhibit'>;
     fullName: Schema.Attribute.String;
     gender: Schema.Attribute.Enumeration<['male', 'female', 'other']>;
+    history_searches: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::history-search.history-search'
+    >;
     invoices: Schema.Attribute.Relation<'oneToMany', 'api::invoice.invoice'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
