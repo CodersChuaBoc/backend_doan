@@ -6,6 +6,60 @@ import crypto from "crypto";
 import axios from "axios";
 import { assign, get } from "lodash";
 import QRCode from "qrcode";
+import path from "path";
+import Mailgun from "mailgun.js";
+import fs from "fs";
+
+const emailTemplate = `
+  <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🎟 Xác nhận đặt vé thành công</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px #ccc; }
+        .header { text-align: center; font-size: 24px; color: #333; }
+        .content { font-size: 16px; color: #555; line-height: 1.6; }
+        .footer { margin-top: 20px; font-size: 14px; text-align: center; color: #777; }
+        .qr-code { text-align: center; margin: 20px 0; }
+        .button {
+            display: inline-block; background: #007bff; color: white; padding: 10px 20px;
+            text-decoration: none; border-radius: 5px; font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">🎉 Xác nhận đặt vé thành công</div>
+        <p class="content">Xin chào <strong>{{fullName}}</strong>,</p>
+        <p class="content">Chúng tôi xin xác nhận rằng bạn đã mua vé thành công. Dưới đây là thông tin chi tiết:</p>
+
+        <ul class="content">
+            <li><strong>Mã giao dịch:</strong> {{transId}}</li>
+            <li><strong>Số lượng:</strong> {{quantity}}</li>
+            <li><strong>Ngày sử dụng:</strong> {{validDate}}</li>
+            <li><strong>Tổng số tiền:</strong> {{totalPrice}} VNĐ</li>
+        </ul>
+
+        <p class="content">Vui lòng sử dụng mã QR bên dưới để vào cửa:</p>
+        
+        <div class="qr-code">
+            <img src="{{qrCodeUrl}}" alt="Mã QR của bạn" width="200">
+        </div>
+
+        <p class="content">Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ chúng tôi qua <a href="mailto:support@yourdomain.com">support@yourdomain.com</a>.</p>
+
+        <p class="content">Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ của chúng tôi! Chúc bạn có một trải nghiệm tuyệt vời! 🎉</p>
+
+        <div class="footer">
+            <p>© 2025 YourCompany. All Rights Reserved.</p>
+            <p><a href="https://yourwebsite.com" class="button">Xem chi tiết đơn hàng</a></p>
+        </div>
+    </div>
+</body>
+</html>
+`;
 
 type DataBody = {
   ticket: 
@@ -316,19 +370,66 @@ export default {
           point: get(data_invoice, 'user.point', 0) + totalPoint,
         },
       });
+      
+      try {
+        // generate qr code
+        const { filePath } = await generateTicket(data_invoice.transId);
+        console.log('Generated QR code at:', filePath);
+
+        // Cập nhật ticketUrl trong invoice
+        await strapi.entityService.update('api::invoice.invoice', invoiceRes.id, {
+          data: {
+            ticketUrl: `${process.env.BACKEND_URL}/uploads/qr-code/${data_invoice.transId}.png`
+          }
+        });
+
+        const emailContent = emailTemplate
+          .replace('{{fullName}}', data_invoice.fullName)
+          .replace('{{transId}}', data_invoice.transId)
+          .replace('{{quantity}}', String(Number(data_invoice.adultTickets) + Number(data_invoice.childTickets) + Number(data_invoice.groupTickets)))
+          .replace('{{validDate}}', moment(get(data_invoice, 'visitDate', '')).format('YYYY-MM-DD'))
+          .replace('{{totalPrice}}', totalPrice.toLocaleString('vi-VN'))
+          .replace('{{qrCodeUrl}}', `${process.env.BACKEND_URL}/uploads/qr-code/${data_invoice.transId}.png`);
+
+        // send email
+        const mailgun = new Mailgun(FormData);
+
+        const mg = mailgun.client({
+          username: 'api',
+          key: process.env.MAILGUN_API_KEY,
+        });
+
+        await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+          from: 'noreply@luongtuan.xyz',
+          to: data_invoice.email,
+          subject: 'Xác nhận đặt vé thành công',
+          html: emailContent,
+        });
+      } catch (error) {
+        console.log('Lỗi gửi email', error);
+      }
     }
   },
-  
 };
-const generateTicket = async (name: string, quantity: number) => {
-  // 🔒 Generate a unique ticket ID (secure hash)
-const ticketId = crypto.randomBytes(16).toString("hex");
 
-// 🔹 Create ticket object
-const ticketData = { ticketId, status: "valid" };
+const generateTicket = async (transId: string) => {
+  try {
+    const ticketUrl = `${process.env.FRONTEND_URL}/mua-ve/mua-ve-thanh-cong?apptransid=${transId}`;
+    const dirname = path.join('public', 'uploads', 'qr-code');
 
-  // 🔹 Convert ticket to JSON and generate QR Code
-  const qrCode = await QRCode.toDataURL(JSON.stringify(ticketData));
+    if (!fs.existsSync(dirname)) {
+      fs.mkdirSync(dirname, { recursive: true });
+    }
 
-  return { ticketId, qrCode };
-}
+    const filePath = path.join(dirname, `${transId}.png`);
+    
+    // QRCode.toFile() chỉ tạo file, không trả về dữ liệu QR code
+    await QRCode.toFile(filePath, ticketUrl);
+
+    // Nên chỉ trả về filePath
+    return { filePath };
+  } catch (error) {
+    console.error("Error generating ticket:", error);
+    throw new Error("Failed to generate ticket");
+  }
+};

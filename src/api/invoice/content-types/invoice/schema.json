@@ -37,6 +37,9 @@
     },
     "transId": {
       "type": "string"
+    },
+    "ticketUrl": {
+      "type": "string"
     }
   }
 }

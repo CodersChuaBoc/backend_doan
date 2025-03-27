@@ -552,6 +552,7 @@ export interface ApiInvoiceDetailInvoiceDetail
   extends Struct.CollectionTypeSchema {
   collectionName: 'invoice_details';
   info: {
+    description: '';
     displayName: 'InvoiceDetail';
     pluralName: 'invoice-details';
     singularName: 'invoice-detail';
@@ -611,6 +612,7 @@ export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     phoneNumber: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    ticketUrl: Schema.Attribute.String;
     totalPrice: Schema.Attribute.BigInteger;
     transId: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
