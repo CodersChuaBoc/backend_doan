@@ -585,6 +585,7 @@ export interface ApiInvoiceDetailInvoiceDetail
 export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
   collectionName: 'invoices';
   info: {
+    description: '';
     displayName: 'Invoice';
     pluralName: 'invoices';
     singularName: 'invoice';
@@ -593,7 +594,6 @@ export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    address: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -609,9 +609,10 @@ export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
       'api::invoice.invoice'
     > &
       Schema.Attribute.Private;
-    PhoneNumber: Schema.Attribute.String;
+    phoneNumber: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     totalPrice: Schema.Attribute.BigInteger;
+    transId: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
