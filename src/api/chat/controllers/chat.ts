@@ -4,7 +4,7 @@
 
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
-
+import { connectToDatabase } from '../../../services/astradb';
 // Define the message type
 type Message = {
   role: "user" | "assistant" | "system"
@@ -65,19 +65,51 @@ export default {
       content: message,
     })
 
-    console.log(messages)
-
     try {
+      // Get relevant context from AstraDB
+      const db = connectToDatabase();
+      const collection = await db.collection("posts_collection");
+      
+      // Generate embedding for the user's query
       const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
-        dangerouslyAllowBrowser: true,
-      })
+      });
+      
+      const embedding = await openai.embeddings.create({
+        model: "text-embedding-3-small",
+        input: message,
+      });
+      
+      const queryVector = embedding.data[0].embedding;
+      
+      // Find similar documents in AstraDB
+      const results = await collection.find({}, {
+        sort: {
+          $vector: queryVector
+        },
+        limit: 5
+      }).toArray();
+      
+      // Prepare context from search results
+      let contextFromDB = "";
+      if (results && results.length > 0) {
+        contextFromDB = "Thông tin liên quan:\n" + 
+          results.map(doc => doc.text).join("\n\n");
+      }
   
       // Prepend the system prompt to the messages array
       const messagesWithSystemPrompt = [
         { role: "system", content: systemPrompt },
         ...messages,
       ]
+      
+      // Add context if available
+      if (contextFromDB) {
+        messagesWithSystemPrompt.push({ 
+          role: "system", 
+          content: `Sử dụng thông tin sau đây để trả lời câu hỏi của người dùng:\n${contextFromDB}` 
+        });
+      }
   
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
@@ -106,6 +138,7 @@ export default {
       return response.choices[0].message.content || "Không có câu trả lời từ AI."
     } catch (error) {
       console.error("Error in AI chat:", error)
+      return "Đã xảy ra lỗi khi xử lý câu hỏi của bạn. Vui lòng thử lại sau."
     }
     
   },
