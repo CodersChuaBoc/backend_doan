@@ -729,7 +729,7 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    view: Schema.Attribute.Integer;
+    view: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
   };
 }
 
