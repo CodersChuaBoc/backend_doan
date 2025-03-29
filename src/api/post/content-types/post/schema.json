@@ -62,9 +62,9 @@
     "isHighlight": {
       "type": "boolean"
     },
-    "tag": {
+    "tags": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::tag.tag",
       "inversedBy": "posts"
     }
