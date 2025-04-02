@@ -20,6 +20,15 @@ export default {
     },
     {
       method: 'POST',
+      path: '/buy-ticket/point-to-ticket',
+      handler: 'buy-ticket.pointToTicket',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'POST',
       path: '/callback-zalo-pay',
       handler: 'buy-ticket.callbackZaloPay',
       config: {

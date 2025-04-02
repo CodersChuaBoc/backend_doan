@@ -43,22 +43,33 @@ export default {
   async sendMessage(ctx) {
     const { message, sessionId } = ctx.request.body;
     const { user } = ctx.state;
-    const { id: userId } = user;
 
-    const lastMessages = await strapi.entityService.findMany('api::message.message', {
-      filters: {
-        users_permissions_user: userId,
-        sessionId: sessionId,
-      },
-      sort: ['createdAt:desc'],
-      limit: 5,
-    })
+    let userId;
+    if(user) {
+      const { id: userId } = user;
+    } else {
+      userId = undefined;
+    }
 
-    const messages = lastMessages.map((msg) => ({
-      role: msg.role,
-      content: msg.message,
-    }))
+    let messages = [];
+    // Check if user is logged in
+    if(userId) {
+      const lastMessages = await strapi.entityService.findMany('api::message.message', {
+        filters: {
+          users_permissions_user: userId,
+          sessionId: sessionId,
+        },
+        sort: ['createdAt:desc'],
+        limit: 5,
+      })
 
+      const mappedMessages = lastMessages.map((msg) => ({
+        role: msg.role,
+        content: msg.message,
+      }))
+
+      messages = [...mappedMessages]
+    }
     messages.push({
       role: 'user',
       content: message,

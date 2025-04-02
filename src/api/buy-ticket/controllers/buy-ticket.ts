@@ -410,6 +410,73 @@ export default {
       }
     }
   },
+
+  pointToTicket: async (ctx) => {
+    const dataBody = ctx.request.body;
+
+    const user = ctx.state.user;
+
+    if(get(user, 'point', 0) <= 0) {
+      return ctx.badRequest('Bạn không có điểm để đổi vé');
+    }
+
+    // update point for user
+    await strapi.entityService.update("plugin::users-permissions.user", user.id, {
+      data: {
+        point: get(user, 'point', 0) - 2000,
+      },
+    });
+
+    // create invoice
+    const invoiceRes =  await strapi.entityService.create('api::invoice.invoice', {
+      data: {
+        users_permissions_user: user.id,
+        fullName: get(dataBody, 'fullName', ''),
+        email: get(dataBody, 'email', ''),
+        phoneNumber: get(dataBody, 'phoneNumber', ''),
+        totalPrice: 0,
+        transId: moment().format('YYMMDD') + '_' + Math.floor(Math.random() * 1000000),
+      },
+    });
+
+    // create invoice detail
+    await strapi.entityService.create('api::invoice-detail.invoice-detail', {
+      data: {
+        invoice: invoiceRes.id,
+        ticket: 1,
+        quantity: 1,
+        price: 0,
+        validDate: moment().format('YYYY-MM-DD'),
+      },
+    });
+    
+    // send email
+    const emailContent = emailTemplate
+      .replace('{{fullName}}', get(dataBody, 'fullName', ''))
+      .replace('{{transId}}', invoiceRes.transId)
+      .replace('{{quantity}}', '1')
+      .replace('{{validDate}}', moment().format('YYYY-MM-DD'))
+      .replace('{{totalPrice}}', '0')
+      .replace('{{qrCodeUrl}}', `${process.env.BACKEND_URL}/uploads/qr-code/${invoiceRes.transId}.png`);
+
+    const mailgun = new Mailgun(FormData);
+
+    const mg = mailgun.client({
+      username: 'api',
+      key: process.env.MAILGUN_API_KEY,
+    });
+    
+    await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+      from: 'noreply@luongtuan.xyz',
+      to: get(dataBody, 'email', ''),
+      subject: 'Xác nhận đặt vé thành công',
+      html: emailContent,
+    });
+
+    return ctx.send({
+      message: 'Đổi điểm thành công',
+    });
+  }
 };
 
 const generateTicket = async (transId: string) => {

@@ -604,6 +604,7 @@ export interface ApiInvoiceInvoice extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::invoice-detail.invoice-detail'
     >;
+    isUsed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1325,7 +1326,8 @@ export interface PluginUsersPermissionsUser
       }>;
     exhibits: Schema.Attribute.Relation<'oneToMany', 'api::exhibit.exhibit'>;
     fullName: Schema.Attribute.String;
-    gender: Schema.Attribute.Enumeration<['male', 'female', 'other']>;
+    gender: Schema.Attribute.Enumeration<['male', 'female', 'other']> &
+      Schema.Attribute.DefaultTo<'other'>;
     history_searches: Schema.Attribute.Relation<
       'oneToMany',
       'api::history-search.history-search'

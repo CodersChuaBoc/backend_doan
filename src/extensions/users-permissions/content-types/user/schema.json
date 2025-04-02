@@ -119,7 +119,8 @@
         "male",
         "female",
         "other"
-      ]
+      ],
+      "default": "other"
     },
     "messages": {
       "type": "relation",

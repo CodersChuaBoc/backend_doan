@@ -40,6 +40,10 @@
     },
     "ticketUrl": {
       "type": "string"
+    },
+    "isUsed": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
