@@ -510,7 +510,9 @@ export interface ApiExhibitExhibit extends Struct.CollectionTypeSchema {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    year: Schema.Attribute.Integer;
+    year: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<1975>;
   };
 }
 

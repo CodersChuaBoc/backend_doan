@@ -52,7 +52,9 @@
       "type": "text"
     },
     "year": {
-      "type": "integer"
+      "type": "integer",
+      "required": true,
+      "default": 1975
     },
     "images": {
       "type": "media",
