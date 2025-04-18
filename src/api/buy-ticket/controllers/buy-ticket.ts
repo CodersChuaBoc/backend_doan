@@ -452,7 +452,7 @@ export default {
         ticket: 1,
         quantity: 1,
         price: 0,
-        validDate: get(dataBody, 'validDate', moment().format('YYYY-MM-DD')),
+        validDate: get(dataBody, 'visitDate', moment().format('YYYY-MM-DD')),
       },
     });
 
@@ -471,7 +471,7 @@ export default {
       .replace('{{fullName}}', get(dataBody, 'fullName', ''))
       .replace('{{transId}}', invoiceRes.transId)
       .replace('{{quantity}}', '1')
-      .replace('{{validDate}}', moment(get(dataBody, 'validDate', moment().format('YYYY-MM-DD'))).format('YYYY-MM-DD'))
+      .replace('{{validDate}}', moment(get(dataBody, 'visitDate', moment().format('YYYY-MM-DD'))).format('YYYY-MM-DD'))
       .replace('{{totalPrice}}', '0')
       .replace('{{qrCodeUrl}}', `${process.env.BACKEND_URL}/uploads/qr-code/${invoiceRes.transId}.png`);
 
