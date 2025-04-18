@@ -21,6 +21,8 @@ export default {
       const db = connectToDatabase();
       await checkOrCreateCollection(db, "posts_collection");
       await loadSampleData(db, "posts_collection");
+      
+      await checkOrCreateCollection(db, "exhibits_collection");
     } catch (error) {
       console.error("Error in bootstrap:", error);
     }
